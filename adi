@@ -54,3 +54,4 @@ spec:
 3. Apply the Secret and Pod:
 
 Apply the Secret and Pod manifest files to your Kubernetes cluster using the kubectl apply command. For example:
+base64-encoded-u
