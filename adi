@@ -1,8 +1,56 @@
-hello
-welcome
-fg
-hjfjd,f
-fggfnfdfg
-heldsdhjsihsdihdxxgsjgajugasugujgdus
-sjdgsdjsjsdsjd
-bhsdadhdb fuck you arman
+apiVersion: v1
+kind: Pod
+metadata:
+  name: my-pod
+spec:
+  containers:
+    - name: my-container
+      image: my-image
+      env:
+        - name: USERNAME
+          valueFrom:
+            secretKeyRef:
+              name: my-secret
+              key: username
+        - name: PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: my-secret
+              key: password
+--------------------------------------------------------------------------
+To access specific secret data as environment variables within a Pod using the SecretKeyRef, you need to define the environment variables in the Pod manifest file. Here's an updated example:
+Define the Secret manifest file:
+
+1.Create a Secret manifest file (e.g., secret.yaml) with the desired secret data. For example:
+apiVersion: v1
+kind: Secret
+metadata:
+  name: my-secret
+data:
+  username: <base64-encoded-username>
+  password: <base64-encoded-password>
+-----------------------------------------------------------
+2. Define the Pod manifest file:
+apiVersion: v1
+kind: Pod
+metadata:
+  name: my-pod
+spec:
+  containers:
+    - name: my-container
+      image: my-image
+      env:
+        - name: USERNAME
+          valueFrom:
+            secretKeyRef:
+              name: my-secret
+              key: username
+        - name: PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: my-secret
+              key: password
+---------------------------------------------------------------------
+3. Apply the Secret and Pod:
+
+Apply the Secret and Pod manifest files to your Kubernetes cluster using the kubectl apply command. For example:
