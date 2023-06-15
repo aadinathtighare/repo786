@@ -55,3 +55,60 @@ spec:
 
 Apply the Secret and Pod manifest files to your Kubernetes cluster using the kubectl apply command. For example:
 base64-encoded-u
+-------------------------------------------------------------------------------------------------------------------
+To read data from a ConfigMap in Kubernetes, you can use environment variables or volume mounts within a Pod. Here's how you can achieve this:
+
+1. Define the ConfigMap manifest file:
+
+Create a ConfigMap manifest file (e.g., configmap.yaml) with the desired configuration data. For example:
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: my-configmap
+data:
+  key1: value1
+  key2: value2
+------------------------------------------------
+2 . Define the Pod manifest file:
+
+Create a Pod manifest file (e.g., pod.yaml) and specify either environment variables or volume mounts to access the ConfigMap data. Here are examples of both approaches:
+
+Environment Variables:
+apiVersion: v1
+kind: Pod
+metadata:
+  name: my-pod
+spec:
+  containers:
+    - name: my-container
+      image: my-image
+      env:
+        - name: KEY1
+          valueFrom:
+            configMapKeyRef:
+              name: my-configmap
+              key: key1
+        - name: KEY2
+          valueFrom:
+            configMapKeyRef:
+              name: my-configmap
+              key: key2
+------------------------------------------------------------
+Volume Mounts:--->
+
+apiVersion: v1
+kind: Pod
+metadata:
+  name: my-pod
+spec:
+  containers:
+    - name: my-container
+      image: my-image
+      volumeMounts:
+        - name: config-volume
+          mountPath: /etc/my-config
+          readOnly: true
+  volumes:
+    - name: config-volume
+      configMap:
+        name: my-configmap
